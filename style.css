@@ -1,0 +1,10 @@
+.container {
+    display: grid;
+    gap: 1px;
+    width: 600px;
+    height: 600px;
+    background-color: red;
+}
+.pixel {
+    background-color: darkgrey;
+}
