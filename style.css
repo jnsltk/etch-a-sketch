@@ -7,3 +7,6 @@
 .pixel {
     background-color: darkgrey;
 }
+#btn {
+    margin-bottom: 10px;
+}
