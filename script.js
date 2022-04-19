@@ -1,5 +1,6 @@
 const container = document.querySelector('.container');
 const btn = document.querySelector('#btn');
+const mode = document.querySelector('#color');
 let gridNumber = 16;
 
 btn.addEventListener('click', resetCanvas)
@@ -16,7 +17,13 @@ function drawCanvas() {
     }
 }
 function changeColor(e) {
-    e.target.style.backgroundColor = 'black';
+    //console.log(e.target.style.backgroundColor);
+    if (e.target.style.backgroundColor) return;
+    if (mode.value === 'color') {
+        e.target.style.backgroundColor = `rgb(${randomColor()}`;
+    } else {
+        e.target.style.backgroundColor = 'black';
+    }
 }
 function resetCanvas() {
     gridNumber = parseInt(prompt('Please enter a number between 1 and 100 for the number of squares per side for the new grid', '16'));
@@ -26,5 +33,14 @@ function resetCanvas() {
     }
     container.innerHTML = '';
     drawCanvas();
+}
+function randomColor() {
+    function random() {
+        return Math.floor(Math.random() * 255) + 1;
+    }
+    let r = random();
+    let g = random();
+    let b = random();
+    return [r, g, b];
 }
 drawCanvas();
