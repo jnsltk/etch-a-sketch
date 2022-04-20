@@ -1,46 +1,65 @@
+/* eslint-disable no-plusplus */
 const container = document.querySelector('.container');
 const btn = document.querySelector('#btn');
 const mode = document.querySelector('#color');
 let gridNumber = 16;
 
-btn.addEventListener('click', resetCanvas)
+function randomColor() {
+  function random() {
+    return Math.floor(Math.random() * 255) + 1;
+  }
+  const r = random();
+  const g = random();
+  const b = random();
+  return [r, g, b];
+}
+function getRgb(string) {
+  return parseInt(string.slice(4, 7), 10);
+}
+function gradualBlack(e) {
+  const gradVal = 25.5;
+  // If the pixel has no color, give the first 10% of black, after that increase by 10%
+  if (!e.target.style.backgroundColor) {
+    // return initial value of 10 percent increase
+    const c = gradVal * 9;
+    return [c, c, c];
+  }
+  if (!getRgb(e.target.style.backgroundColor)) return [0, 0, 0];
 
-function drawCanvas() {
-    container.setAttribute('style', `grid-template-columns: repeat(${gridNumber}, 1fr); 
-        grid-template-rows: repeat(${gridNumber}, 1fr);`);
+  const currentColor = e.target.style.backgroundColor;
+  const c = (getRgb(e.target.style.backgroundColor) - gradVal) - (getRgb(currentColor) % gradVal);
 
-    for (let i = 0; i < gridNumber * gridNumber; i++) {
-        const pixel = document.createElement('div');
-        pixel.classList.add('pixel');
-        pixel.addEventListener('mouseenter', changeColor)
-        container.appendChild(pixel);
-    }
+  return [c, c, c];
 }
 function changeColor(e) {
-    //console.log(e.target.style.backgroundColor);
-    if (e.target.style.backgroundColor) return;
-    if (mode.value === 'color') {
-        e.target.style.backgroundColor = `rgb(${randomColor()}`;
-    } else {
-        e.target.style.backgroundColor = 'black';
-    }
+  if (mode.value === 'black') {
+    e.target.style.backgroundColor = 'black';
+  } else if (mode.value === 'color' && !e.target.style.backgroundColor) {
+    e.target.style.backgroundColor = `rgb(${randomColor()}`;
+  } else if (mode.value === 'gradual') {
+    e.target.style.backgroundColor = `rgb(${gradualBlack(e)}`;
+  }
+}
+function drawCanvas() {
+  container.setAttribute('style', `grid-template-columns: repeat(${gridNumber}, 1fr); 
+        grid-template-rows: repeat(${gridNumber}, 1fr);`);
+
+  for (let i = 0; i < gridNumber * gridNumber; i++) {
+    const pixel = document.createElement('div');
+    pixel.classList.add('pixel');
+    pixel.addEventListener('mouseenter', changeColor);
+    container.appendChild(pixel);
+  }
 }
 function resetCanvas() {
-    gridNumber = parseInt(prompt('Please enter a number between 1 and 100 for the number of squares per side for the new grid', '16'));
-    if (gridNumber > 100 || gridNumber < 0) {
-        alert('Please input a valid number and try again!');
-        return;
-    }
-    container.innerHTML = '';
-    drawCanvas();
+  gridNumber = parseInt(prompt('Please enter a number between 1 and 100 for the number of squares per side for the new grid', '16'), 10);
+  if (gridNumber > 100 || gridNumber < 0) {
+    alert('Please input a valid number and try again!');
+    return;
+  }
+  container.innerHTML = '';
+  drawCanvas();
 }
-function randomColor() {
-    function random() {
-        return Math.floor(Math.random() * 255) + 1;
-    }
-    let r = random();
-    let g = random();
-    let b = random();
-    return [r, g, b];
-}
+
+btn.addEventListener('click', resetCanvas);
 drawCanvas();

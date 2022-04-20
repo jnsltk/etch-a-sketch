@@ -3,9 +3,10 @@
     gap: 1px;
     width: 600px;
     height: 600px;
+    border: 1px solid black;
 }
 .pixel {
-    background-color: darkgrey;
+    background-color: rgb(255, 255, 255)
 }
 #btn {
     margin-bottom: 10px;
