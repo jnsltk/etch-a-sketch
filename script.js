@@ -2,6 +2,7 @@
 const container = document.querySelector('.container');
 const btn = document.querySelector('#btn');
 const mode = document.querySelector('#color');
+// Set inital size of the grid
 let gridNumber = 16;
 
 function randomColor() {
@@ -18,17 +19,17 @@ function getRgb(string) {
 }
 function gradualBlack(e) {
   const gradVal = 25.5;
+  const currentColor = e.target.style.backgroundColor;
   // If the pixel has no color, give the first 10% of black, after that increase by 10%
-  if (!e.target.style.backgroundColor) {
-    // return initial value of 10 percent increase
+  if (!currentColor) {
+    // Return initial value of 10% black
     const c = gradVal * 9;
     return [c, c, c];
   }
-  if (!getRgb(e.target.style.backgroundColor)) return [0, 0, 0];
-
-  const currentColor = e.target.style.backgroundColor;
-  const c = (getRgb(e.target.style.backgroundColor) - gradVal) - (getRgb(currentColor) % gradVal);
-
+  // If value is already black, return black
+  if (!getRgb(currentColor)) return [0, 0, 0];
+  // Add 10% of black, taking the values that end with .5 into consideration
+  const c = (getRgb(currentColor) - gradVal) - (getRgb(currentColor) % gradVal);
   return [c, c, c];
 }
 function changeColor(e) {
